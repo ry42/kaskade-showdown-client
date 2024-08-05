@@ -3597,6 +3597,10 @@ export class Battle {
 		case 'upkeep': {
 			this.usesUpkeep = true;
 			this.updateTurnCounters();
+			// Prevents getSwitchedPokemon from skipping over a Pokemon that switched out mid turn (e.g. U-turn)
+			for (const side of this.sides) {
+				side.lastPokemon = null;
+			}
 			break;
 		}
 		case 'turn': {
@@ -3615,6 +3619,9 @@ export class Battle {
 			}
 			if (this.tier.includes(`Let's Go`)) {
 				this.dex = Dex.mod('gen7letsgo' as ID);
+			}
+			if (this.tier.includes('Super Staff Bros')) {
+				this.dex = Dex.mod('gen9ssb' as ID);
 			}
 			this.log(args);
 			break;
@@ -3928,6 +3935,21 @@ export class Battle {
 		}
 		case 'controlshtml': {
 			this.scene.setControlsHTML(BattleLog.sanitizeHTML(args[1]));
+			break;
+		}
+		case 'custom': {
+			// Style is always |custom|-subprotocol|pokemon|additional info
+			if (args[1] === '-endterastallize') {
+				let poke = this.getPokemon(args[2])!;
+				poke.removeVolatile('terastallize' as ID);
+				poke.teraType = '';
+				poke.terastallized = '';
+				poke.details = poke.details.replace(/, tera:[a-z]+/i, '');
+				poke.searchid = poke.searchid.replace(/, tera:[a-z]+/i, '');
+				this.scene.animTransform(poke);
+				this.scene.resetStatbar(poke);
+				this.log(args, kwArgs);
+			}
 			break;
 		}
 		default: {
