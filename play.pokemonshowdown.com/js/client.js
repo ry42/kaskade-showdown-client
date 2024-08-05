@@ -405,7 +405,7 @@ function toId() {
 			this.supports = {};
 
 			// down
-			// if (document.location.hostname === 'play.pokemonshowdown.com') this.down = true;
+			// if (document.location.hostname === 'play.pokemonshowdown.com' || document.location.hostname === 'smogtours.psim.us') this.down = true;
 			// this.down = true;
 
 			this.addRoom('');
@@ -458,7 +458,8 @@ function toId() {
 					var settings = Dex.prefs('serversettings') || {};
 					if (Object.keys(settings).length) app.user.set('settings', settings);
 					// HTML5 history throws exceptions when running on file://
-					Backbone.history.start({pushState: !Config.testclient});
+					var useHistory = !Config.testclient && (location.pathname.slice(-5) !== '.html');
+					Backbone.history.start({pushState: useHistory});
 					app.ignore = app.loadIgnore();
 				});
 			}
@@ -696,6 +697,11 @@ function toId() {
 				Object.assign(Config.customcolors, data);
 			});
 
+			// get coil values too
+			$.get('/config/coil.json', {}, function (data) {
+				Object.assign(LadderRoom.COIL_B, data);
+			});
+
 			this.initializeConnection();
 		},
 		/**
@@ -756,7 +762,7 @@ function toId() {
 
 			var self = this;
 			var constructSocket = function () {
-				if (location.host === 'localhost.psim.us' || /[0-9]+.[0-9]+.[0-9]+.[0-9]+\.psim\.us/.test(location.host)) {
+				if (location.host === 'localhost.psim.us' || /[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+\.psim\.us/.test(location.host)) {
 					// normally we assume HTTPS means HTTPS, but make an exception for
 					// localhost and IPs which generally can't have a signed cert anyway.
 					Config.server.port = 8000;
