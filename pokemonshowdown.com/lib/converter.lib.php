@@ -420,11 +420,16 @@ function pokeConvertInner($text) {
 		} else if (endsRemove($line, ' was poisoned!')) {
 			if ($lastmove === 'Toxic') {
 				$out[] = '|-status|'.resolvePokemon($line).'|tox';
-			} else {
+			} else if ($lastmove === 'Blight Spore') {
+				$out[] = '|-status|'.resolvePokemon($line).'|blt';
+			}
+			else {
 				$out[] = '|-status|'.resolvePokemon($line).'|psn';
 			}
 		} else if (endsRemove($line, ' was badly poisoned!')) {
 			$out[] = '|-status|'.resolvePokemon($line).'|tox';
+		} else if (endsRemove($line, ' was horribly poisoned!')) {
+			$out[] = '|-status|'.resolvePokemon($line).'|blt';
 		} else if (endsRemove($line, ' is already poisoned.')) {
 			$out[] = '|-fail|'.resolvePokemon($line).'|psn';
 		} else if (endsRemove($line, ' is already burnt.')) {

@@ -969,6 +969,12 @@ class BattleTooltips {
 					} else {
 						text += ' Next damage: ' + Math.floor(100 / (clientPokemon.volatiles['dynamax'] ? 32 : 16) * Math.min(clientPokemon.statusData.toxicTurns + 1, 15)) + '%';
 					}
+				} else if (pokemon.status === 'blt') {
+					if (pokemon.ability === 'Poison Heal' || pokemon.ability === 'Magic Guard') {
+						text += ' <small>Would take if ability removed: ' + Math.floor(100 / 8 * Math.min(clientPokemon.statusData.blightTurns + 1, 7)) + '%</small>';
+					} else {
+						text += ' Next damage: ' + Math.floor(100 / (clientPokemon.volatiles['dynamax'] ? 32 : 8) * Math.min(clientPokemon.statusData.blightTurns + 1, 7)) + '%';
+					}
 				} else if (pokemon.status === 'slp') {
 					text += ' Turns asleep: ' + clientPokemon.statusData.sleepTurns;
 				}
@@ -2275,7 +2281,7 @@ class BattleTooltips {
 			value.setRange(10, 150);
 		}
 		if (['venoshock', 'barbbarrage'].includes(move.id) && target) {
-			if (['psn', 'tox'].includes(target.status)) {
+			if (['psn', 'tox', 'blt'].includes(target.status)) {
 				value.modify(2, move.name + ' + Poison');
 			}
 		}
@@ -2416,7 +2422,7 @@ class BattleTooltips {
 		if (value.value <= 60) {
 			value.abilityModify(1.5, "Technician");
 		}
-		if (['psn', 'tox'].includes(pokemon.status) && move.category === 'Physical') {
+		if (['psn', 'tox', 'blt'].includes(pokemon.status) && move.category === 'Physical') {
 			value.abilityModify(1.5, "Toxic Boost");
 		}
 		if (move.secondaries) {

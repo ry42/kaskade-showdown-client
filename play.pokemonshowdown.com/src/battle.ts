@@ -94,7 +94,7 @@ export class Pokemon implements PokemonDetails, PokemonHealth {
 	teraType = '';
 
 	boosts: {[stat: string]: number} = {};
-	status: StatusName | 'tox' | '' | '???' = '';
+	status: StatusName | 'tox' | 'blt' | '' | '???' = '';
 	statusStage = 0;
 	volatiles: {[effectid: string]: EffectState} = {};
 	turnstatuses: {[effectid: string]: EffectState} = {};
@@ -103,7 +103,7 @@ export class Pokemon implements PokemonDetails, PokemonHealth {
 
 	/** [[moveName, ppUsed]] */
 	moveTrack: [string, number][] = [];
-	statusData = {sleepTurns: 0, toxicTurns: 0};
+	statusData = {sleepTurns: 0, toxicTurns: 0, blightTurns: 0};
 	timesAttacked = 0;
 
 	sprite: PokemonSprite;
@@ -427,6 +427,7 @@ export class Pokemon implements PokemonDetails, PokemonHealth {
 		// this.lastMove = '';
 		this.statusStage = 0;
 		this.statusData.toxicTurns = 0;
+		this.statusData.blightTurns = 0;
 		if (this.side.battle.gen === 5) this.statusData.sleepTurns = 0;
 	}
 	/**
@@ -901,6 +902,7 @@ export class Side {
 			this.battle.log(['switchout', pokemon.ident], {from: effect.id});
 		}
 		pokemon.statusData.toxicTurns = 0;
+		pokemon.statusData.blightTurns = 0;
 		if (this.battle.gen === 5) pokemon.statusData.sleepTurns = 0;
 		this.lastPokemon = pokemon;
 		this.active[slot] = null;
@@ -979,7 +981,7 @@ export interface PokemonHealth {
 	hp: number;
 	maxhp: number;
 	hpcolor: HPColor | '';
-	status: StatusName | 'tox' | '' | '???';
+	status: StatusName | 'tox' | 'blt' | '' | '???';
 	fainted?: boolean;
 }
 export interface ServerPokemon extends PokemonDetails, PokemonHealth {
@@ -1644,6 +1646,7 @@ export class Battle {
 		for (const poke of [...this.nearSide.active, ...this.farSide.active]) {
 			if (poke) {
 				if (poke.status === 'tox') poke.statusData.toxicTurns++;
+				if (poke.status === 'blt') poke.statusData.blightTurns++;
 				poke.clearTurnstatuses();
 			}
 		}
@@ -1951,6 +1954,7 @@ export class Battle {
 					poke.side.wisher = null;
 					poke.statusData.sleepTurns = 0;
 					poke.statusData.toxicTurns = 0;
+					poke.statusData.blightTurns = 0;
 					break;
 				case 'wish':
 					this.scene.runResidualAnim('wish' as ID, poke);
@@ -2213,6 +2217,7 @@ export class Battle {
 			case 'brn':
 				this.scene.resultAnim(poke, 'Already burned', 'neutral');
 				break;
+			case 'blt':
 			case 'tox':
 			case 'psn':
 				this.scene.resultAnim(poke, 'Already poisoned', 'neutral');
@@ -2322,6 +2327,11 @@ export class Battle {
 				this.scene.resultAnim(poke, 'Burned', 'brn');
 				this.scene.runStatusAnim('brn' as ID, [poke]);
 				break;
+			case 'blt':
+				this.scene.resultAnim(poke, 'Blight poison', 'psn');
+				this.scene.runStatusAnim('blt' as ID, [poke]);
+				poke.statusData.blightTurns = 0;
+				break;
 			case 'tox':
 				this.scene.resultAnim(poke, 'Toxic poison', 'psn');
 				this.scene.runStatusAnim('psn' as ID, [poke]);
@@ -2378,8 +2388,10 @@ export class Battle {
 				case 'brn':
 					this.scene.resultAnim(poke, 'Burn cured', 'good');
 					break;
+				case 'blt':
 				case 'tox':
 				case 'psn':
+					poke.statusData.blightTurns = 0;
 					poke.statusData.toxicTurns = 0;
 					this.scene.resultAnim(poke, 'Poison cured', 'good');
 					break;
@@ -3443,9 +3455,11 @@ export class Battle {
 		if (!status) {
 			output.status = '';
 		} else if (status === 'par' || status === 'brn' || status === 'slp' || status === 'frz' || status === 'tox' ||
-		status === 'frb') {
+		status === 'frb' || status === 'blt') {
 			output.status = status;
 		} else if (status === 'psn' && output.status !== 'tox') {
+			output.status = status;
+		} else if (status === 'psn' && output.status !== 'blt') {
 			output.status = status;
 		} else if (status === 'fnt') {
 			output.hp = 0;
