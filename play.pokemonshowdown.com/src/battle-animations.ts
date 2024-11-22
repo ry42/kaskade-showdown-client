@@ -3012,7 +3012,7 @@ export class PokemonSprite extends Sprite {
 		} else if (pokemon.status === 'tox') {
 			status += '<span class="psn">TOX</span> ';
 		} else if (pokemon.status === 'blt') {
-			status += '<span class="BLT">FRB</span> ';
+			status += '<span class="BLT">BLT</span> ';
 		} else if (pokemon.status === 'slp') {
 			status += '<span class="slp">SLP</span> ';
 		} else if (pokemon.status === 'par') {

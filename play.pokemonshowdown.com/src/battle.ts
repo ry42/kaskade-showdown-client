@@ -2329,7 +2329,7 @@ export class Battle {
 				break;
 			case 'blt':
 				this.scene.resultAnim(poke, 'Blight poison', 'psn');
-				this.scene.runStatusAnim('blt' as ID, [poke]);
+				this.scene.runStatusAnim('psn' as ID, [poke]);
 				poke.statusData.blightTurns = 0;
 				break;
 			case 'tox':
