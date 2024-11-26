@@ -740,7 +740,7 @@ const BattlePokemonIconIndexes: {[id: string]: number} = {
 	tamunk: 1608 + 113,
 	temunk: 1608 + 114,
 	manadza: 1608 + 115,
-	artikull: 1608 + 116,
+	arctikull: 1608 + 116,
 	wicoot: 1608 + 117,
 	orogon: 1608 + 118,
 	orbtholod: 1608 + 119,
