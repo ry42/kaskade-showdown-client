@@ -972,14 +972,19 @@
 					user: targets[0]
 				}, Storage.safeJSON(function (data) {
 					if (!data || !$.isArray(data)) return self.add('|raw|Error: corrupted ranking data');
-					var buffer = '<div class="ladder"><table><tr><td colspan="8">User: <strong>' + toName(targets[0]) + '</strong></td></tr>';
+					var buffer = '<div class="ladder"><table><tr><td colspan="9">User: <strong>' + toName(targets[0]) + '</strong></td></tr>';
 					if (!data.length) {
-						buffer += '<tr><td colspan="8"><em>This user has not played any ladder games yet.</em></td></tr>';
+						buffer += '<tr><td colspan="9"><em>This user has not played any ladder games yet.</em></td></tr>';
 						buffer += '</table></div>';
 						return self.add('|raw|' + buffer);
 					}
-					buffer += '<tr><th>Format</th><th><abbr title="Elo rating">Elo</abbr></th><th><abbr title="user\'s percentage chance of winning a random battle (aka GLIXARE)">GXE</abbr></th><th><abbr title="Glicko-1 rating: rating±deviation">Glicko-1</abbr></th><th>COIL</th><th>W</th><th>L</th><th>Total</th></tr>';
-
+					buffer += '<tr><th>Format</th><th><abbr title="Elo rating">Elo</abbr></th><th><abbr title="user\'s percentage chance of winning a random battle (aka GLIXARE)">GXE</abbr></th><th><abbr title="Glicko-1 rating: rating±deviation">Glicko-1</abbr></th><th>COIL</th><th>W</th><th>L</th><th>Total</th>';
+					var suspect = false;
+					for (var i = 0; i < data.length; i++) {
+						if ('suspect' in data[i]) suspect = true;
+					}
+					if (suspect) buffer += '<th>Suspect reqs possible?</th>';
+					buffer += '</tr>';
 					var hiddenFormats = [];
 					for (var i = 0; i < data.length; i++) {
 						var row = data[i];
@@ -1015,7 +1020,17 @@
 						} else {
 							buffer += '<td>--</td>';
 						}
-						buffer += '<td>' + row.w + '</td><td>' + row.l + '</td><td>' + N + '</td></tr>';
+						buffer += '<td>' + row.w + '</td><td>' + row.l + '</td><td>' + N + '</td>';
+						if (suspect) {
+							if (typeof row.suspect === 'undefined') {
+								buffer += '<td>--</td>';
+							} else {
+								buffer += '<td>';
+								buffer += (row.suspect ? "Yes" : "No");
+								buffer += '</td>';
+							}
+						}
+						buffer += '</tr>';
 					}
 					if (hiddenFormats.length) {
 						if (hiddenFormats.length === data.length) {

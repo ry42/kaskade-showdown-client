@@ -615,7 +615,7 @@ class BattleTextParser {
 				const template = this.template('activate', 'perishsong');
 				return line1 + template.replace('[POKEMON]', this.pokemon(pokemon)).replace('[NUMBER]', num);
 			}
-			if (id.startsWith('protosynthesis') || id.startsWith('quarkdrive') || id.startsWith('stealthadvantage')) {
+			if (id.startsWith('protosynthesis') || id.startsWith('quarkdrive')) {
 				const stat = id.slice(-3);
 				const template = this.template('start', id.slice(0, id.length - 3));
 				return line1 + template.replace('[POKEMON]', this.pokemon(pokemon)).replace('[STAT]', BattleTextParser.stat(stat));
@@ -945,7 +945,7 @@ class BattleTextParser {
 			if (id === 'forewarn' && pokemon === target) {
 				templateId = 'activateNoTarget';
 			}
-			if ((id === 'protosynthesis' || id === 'quarkdrive' || id === 'stealthadvantage') && kwArgs.fromitem) {
+			if ((id === 'protosynthesis' || id === 'quarkdrive') && kwArgs.fromitem) {
 				templateId = 'activateFromItem';
 			}
 			if (id === 'orichalcumpulse' && kwArgs.source) {

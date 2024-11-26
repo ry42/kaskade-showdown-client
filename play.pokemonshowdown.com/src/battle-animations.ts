@@ -2089,11 +2089,6 @@ export class PokemonSprite extends Sprite {
 		lightscreen: ['Light Screen', 'good'],
 		reflect: ['Reflect', 'good'],
 		// swse
-		stealthadvantageatk: ['Stealth Advantage: Atk', 'good'],
-		stealthadvantagedef: ['Stealth Advantage: Def', 'good'],
-		stealthadvantagespa: ['Stealth Advantage: SpA', 'good'],
-		stealthadvantagespd: ['Stealth Advantage: SpD', 'good'],
-		stealthadvantagespe: ['Stealth Advantage: Spe', 'good'],
 		sunscreen: ['Sunscreen', 'good'],
 		caffeinecrash: ['Caffeine Crash', 'bad'],
 	};
@@ -3081,7 +3076,7 @@ export class PokemonSprite extends Sprite {
 		if (pokemon.maxhp === 48 || this.scene.battle.hardcoreMode && pokemon.maxhp === 100) {
 			$hptext.hide();
 			$hptextborder.hide();
-		} else if (this.scene.battle.hardcoreMode) {
+		} else if (this.scene.battle.hardcoreMode || this.scene.battle.reportExactHP) {
 			$hptext.html(pokemon.hp + '/');
 			$hptext.show();
 			$hptextborder.show();
