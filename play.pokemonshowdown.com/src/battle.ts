@@ -446,7 +446,6 @@ export class Pokemon implements PokemonDetails, PokemonHealth {
 			for (const statName of Dex.statNamesExceptHP) {
 				volatilesToRemove.push('protosynthesis' + statName);
 				volatilesToRemove.push('quarkdrive' + statName);
-				volatilesToRemove.push('stealthadvantage' + statName);
 			}
 			for (const volatile of volatilesToRemove) {
 				delete this.volatiles[volatile];
@@ -584,9 +583,10 @@ export class Pokemon implements PokemonDetails, PokemonHealth {
 		return percentage * maxWidth / 100;
 	}
 	getHPText(precision = 1) {
-		return Pokemon.getHPText(this, precision);
+		return Pokemon.getHPText(this, this.side.battle.reportExactHP, precision);
 	}
-	static getHPText(pokemon: PokemonHealth, precision = 1) {
+	static getHPText(pokemon: PokemonHealth, exactHP: boolean, precision = 1) {
+		if (exactHP) return pokemon.hp + '/' + pokemon.maxhp;
 		if (pokemon.maxhp === 100) return pokemon.hp + '%';
 		if (pokemon.maxhp !== 48) return (100 * pokemon.hp / pokemon.maxhp).toFixed(precision) + '%';
 		let range = Pokemon.getPixelRange(pokemon.hp, pokemon.hpcolor);
@@ -1110,6 +1110,7 @@ export class Battle {
 	rated: string | boolean = false;
 	rules: {[ruleName: string]: 1 | 0} = {};
 	isBlitz = false;
+	reportExactHP = false;
 	endLastTurnPending = false;
 	totalTimeLeft = 0;
 	graceTimeLeft = 0;
@@ -2727,6 +2728,10 @@ export class Battle {
 			poke.terastallized = type;
 			poke.details += `, tera:${type}`;
 			poke.searchid += `, tera:${type}`;
+			if (poke.speciesForme.startsWith("Morpeko")) {
+				poke.details = poke.details.replace("Morpeko", poke.speciesForme);
+				poke.searchid = `${poke.ident}|${poke.details}`;
+			}
 			this.scene.animTransform(poke, true);
 			this.scene.resetStatbar(poke);
 			this.log(args, kwArgs);
@@ -2985,13 +2990,6 @@ export class Battle {
 					poke.removeVolatile('quarkdrivespa' as ID);
 					poke.removeVolatile('quarkdrivespd' as ID);
 					poke.removeVolatile('quarkdrivespe' as ID);
-					break;
-				case 'stealthadvantage':
-					poke.removeVolatile('stealthadvantageatk' as ID);
-					poke.removeVolatile('stealthadvantagedef' as ID);
-					poke.removeVolatile('stealthadvantagespa' as ID);
-					poke.removeVolatile('stealthadvantagespd' as ID);
-					poke.removeVolatile('stealthadvantagespe' as ID);
 					break;
 				default:
 					if (effect.effectType === 'Move') {
@@ -3687,6 +3685,7 @@ export class Battle {
 				this.messageFadeTime = 40;
 				this.isBlitz = true;
 			}
+			if (ruleName === 'Exact HP Mod') this.reportExactHP = true;
 			this.rules[ruleName] = 1;
 			this.log(args);
 			break;

@@ -961,7 +961,7 @@ class BattleTooltips {
 			} else if (pokemon.maxhp === 48) {
 				exacthp = ' <small>(' + pokemon.hp + '/' + pokemon.maxhp + ' pixels)</small>';
 			}
-			text += '<p><small>HP:</small> ' + Pokemon.getHPText(pokemon) + exacthp + (pokemon.status ? ' <span class="status ' + pokemon.status + '">' + pokemon.status.toUpperCase() + '</span>' : '');
+			text += '<p><small>HP:</small> ' + Pokemon.getHPText(pokemon, this.battle.reportExactHP) + exacthp + (pokemon.status ? ' <span class="status ' + pokemon.status + '">' + pokemon.status.toUpperCase() + '</span>' : '');
 			if (clientPokemon) {
 				if (pokemon.status === 'tox') {
 					if (pokemon.ability === 'Poison Heal' || pokemon.ability === 'Magic Guard') {
@@ -1418,10 +1418,7 @@ class BattleTooltips {
 				speedModifiers.push(2);
 			}
 			for (const statName of Dex.statNamesExceptHP) {
-				if (
-					clientPokemon.volatiles['protosynthesis' + statName] || clientPokemon.volatiles['quarkdrive' + statName] ||
-					clientPokemon.volatiles['stealthadvantage' + statName]
-				) {
+				if (clientPokemon.volatiles['protosynthesis' + statName] || clientPokemon.volatiles['quarkdrive' + statName]) {
 					if (statName === 'spe') {
 						speedModifiers.push(1.5);
 					} else {
@@ -2040,7 +2037,7 @@ class BattleTooltips {
 			value.climateWeatherModify(0, 'Rain Dance');
 			value.climateWeatherModify(0, 'Primordial Sea');
 		}
-		if (move.type === 'Steel') { // incomplete, need to code electric moves vs steel
+		if (move.type === 'Steel') {
 			value.energyWeatherModify(0, 'Magnetize');
 		}
 		if (move.flags['wind']) {
@@ -2111,6 +2108,7 @@ class BattleTooltips {
 			accuracyModifiers.push(5325);
 			value.abilityModify(1.3, "Compound Eyes");
 		}
+
 		if (value.tryItem('Wide Lens')) {
 			accuracyModifiers.push(4505);
 			value.itemModify(1.1, "Wide Lens");
