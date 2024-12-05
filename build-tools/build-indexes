@@ -781,10 +781,7 @@ process.stdout.write("Building `data/teambuilder-tables.js`... ");
 			// swse
 				poorItems.push(id);
 				break;
-			/* Specific
-			// swse
-				specificItems.push(id);
-				break; */
+			// Specific
 			// No battle effect
 			case 'rarebone':
 			case 'belueberry':
@@ -910,17 +907,19 @@ process.stdout.write("Building `data/teambuilder-tables.js`... ");
 					} else {
 						nicheItems.push(id);
 					}
+				} else if (item.name.endsWith(" Berry")) {
+					nicheBerryItems.push(id);
+				} else if (item.name.endsWith(" Plate")) {
+					// plateItems.push(id);
+					futureItems.push(id);
 				} else if (item.name.endsWith(" Drive")) {
 					specificItems.push(id);
 				} else if (item.name.endsWith(" Memory")) {
 					specificItems.push(id);
 				} else if (item.name.startsWith("Rusted")) {
 					specificItems.push(id);
-				} else if (item.name.endsWith(" Plate")) {
-					// plateItems.push(id);
-					futureItems.push(id);
-				} else if (item.name.endsWith(" Berry")) {
-					nicheBerryItems.push(id);
+				} else if (pokemon.abilities["Protosynthesis" || "Quark Drive"]) {
+					specificItems.push(id);
 				} else if (item.itemUser) {
 					specificItems.push(id);
 				} else if (item.megaStone) {
