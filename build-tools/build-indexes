@@ -918,8 +918,6 @@ process.stdout.write("Building `data/teambuilder-tables.js`... ");
 					specificItems.push(id);
 				} else if (item.name.startsWith("Rusted")) {
 					specificItems.push(id);
-				} else if (pokemon.abilities["Protosynthesis" || "Quark Drive"]) {
-					specificItems.push(id);
 				} else if (item.itemUser) {
 					specificItems.push(id);
 				} else if (item.megaStone) {
