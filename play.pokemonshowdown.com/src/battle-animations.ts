@@ -2095,6 +2095,7 @@ export class PokemonSprite extends Sprite {
 		warpmistspd: ['Warp Mist: SpD', 'good'],
 		warpmistspe: ['Warp Mist: Spe', 'good'],
 		sunscreen: ['Sunscreen', 'good'],
+		resilientoil: ['Resilient Oil', 'good'],
 		caffeinecrash: ['Caffeine Crash', 'bad'],
 	};
 	forme = '';

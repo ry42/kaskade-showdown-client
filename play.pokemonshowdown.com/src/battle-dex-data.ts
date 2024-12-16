@@ -752,6 +752,7 @@ const BattlePokemonIconIndexes: {[id: string]: number} = {
 	endramodai: 1608 + 124,
 
 	// swse formes
+	
 	raticatekaskade: 1740 + 0,
 	bellsproutkaskade: 1740 + 1,
 	gastlykaskade: 1740 + 2,
