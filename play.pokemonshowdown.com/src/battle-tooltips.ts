@@ -635,7 +635,7 @@ class BattleTooltips {
 				if (!movePower && move.id.startsWith('hiddenpower')) {
 					movePower = this.battle.dex.moves.get('hiddenpower').zMove!.basePower;
 				}
-				if (move.id === 'weatherball') { // incomplete
+				if (move.id === 'weatherball') { // updated
 					switch (this.battle.climateWeather) {
 					case 'sunnyday':
 					case 'desolateland':
@@ -2072,15 +2072,24 @@ class BattleTooltips {
 		// Accuracy modifiers start
 
 		let accuracyModifiers = [];
-		if (move.type !== 'Normal' || !value.tryAbility('Droughtproof')) {
-			if (value.tryClimateWeather('Foghorn')) value.modify(9 / 10, 'Fog');
+		if (!(move.type === 'Normal' || value.tryAbility('Droughtproof'))) {
+			if (value.tryClimateWeather('Foghorn')) {
+				accuracyModifiers.push(3686);
+				value.modify(9 / 10, 'Fog');
+			}
 		}
 		if ((this.pokemonHasType(pokemon, 'Bug') || this.pokemonHasType(pokemon, 'Bug')) &&
 		!value.tryItem('Safety Goggles')) {
-			if (value.tryIrritantWeather('Swarm Signal')) value.modify(4 / 3, 'Pheromones');
+			if (value.tryIrritantWeather('Swarm Signal')) {
+				accuracyModifiers.push(5461);
+				value.modify(4 / 3, 'Pheromones');
+			}
 		}
 		if (value.tryAbility('Master Instinct')) {
-			if (value.tryEnergyWeather('Aura Projection')) value.modify(1.2, 'Battle Aura');
+			if (value.tryEnergyWeather('Aura Projection')) {
+				accuracyModifiers.push(4915);
+				value.modify(6 / 5, 'Battle Aura');
+			}
 		}
 
 		if (this.battle.hasPseudoWeather('Gravity')) {
@@ -2291,13 +2300,13 @@ class BattleTooltips {
 		if (move.id === 'weatherball') { // updated
 			switch (this.battle.getRecentWeather()) {
 			case this.battle.climateWeather:
-				value.climateWeatherModify(2);
+				if (serverPokemon.item !== 'utilityumbrella') value.climateWeatherModify(2);
 				break;
 			case this.battle.irritantWeather:
-				value.irritantWeatherModify(2);
+				if (serverPokemon.item !== 'safetygoggles') value.irritantWeatherModify(2);
 				break;
 			case this.battle.energyWeather:
-				value.energyWeatherModify(2);
+				if (serverPokemon.item !== 'energynullifier') value.energyWeatherModify(2);
 				break;
 			case this.battle.clearingWeather:
 				value.clearingWeatherModify(2);
