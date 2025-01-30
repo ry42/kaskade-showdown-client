@@ -871,6 +871,22 @@ class BattleTextParser {
 			return line1 + template;
 		}
 
+		case '-cataclysmWeather': {
+			const [, cataclysmWeather] = args;
+			if (!cataclysmWeather || cataclysmWeather === 'none') {
+				const template = this.template('end', kwArgs.from, 'NODEFAULT');
+				if (!template) return this.template('endFieldEffect').replace('[EFFECT]', this.effect(cataclysmWeather));
+				return template;
+			}
+			if (kwArgs.upkeep) {
+				return this.template('upkeep', cataclysmWeather, 'NODEFAULT');
+			}
+			const line1 = this.maybeAbility(kwArgs.from, kwArgs.of);
+			let template = this.template('start', cataclysmWeather, 'NODEFAULT');
+			if (!template) template = this.template('startFieldEffect').replace('[EFFECT]', this.effect(cataclysmWeather));
+			return line1 + template;
+		}
+
 		case '-fieldstart': case '-fieldactivate': {
 			const [, effect] = args;
 			const line1 = this.maybeAbility(kwArgs.from, kwArgs.of);

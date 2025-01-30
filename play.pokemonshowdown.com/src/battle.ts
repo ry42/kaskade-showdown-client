@@ -1072,15 +1072,18 @@ export class Battle {
 	irritantWeather = '' as ID;
 	energyWeather = '' as ID;
 	clearingWeather = '' as ID;
+	cataclysmWeather = '' as ID;
 	pseudoWeather = [] as WeatherState[];
 	climateWeatherTimeLeft = 0;
 	irritantWeatherTimeLeft = 0;
 	energyWeatherTimeLeft = 0;
 	clearingWeatherTimeLeft = 0;
+	cataclysmWeatherTimeLeft = 0;
 	climateWeatherMinTimeLeft = 0;
 	irritantWeatherMinTimeLeft = 0;
 	energyWeatherMinTimeLeft = 0;
 	clearingWeatherMinTimeLeft = 0;
+	cataclysmWeatherMinTimeLeft = 0;
 	activeWeathers = [] as ID[];
 	/**
 	 * The side from which perspective we're viewing. Should be identical to
@@ -1277,14 +1280,17 @@ export class Battle {
 		this.irritantWeather = '' as ID;
 		this.energyWeather = '' as ID;
 		this.clearingWeather = '' as ID;
+		this.cataclysmWeather = '' as ID;
 		this.climateWeatherTimeLeft = 0;
 		this.irritantWeatherTimeLeft = 0;
 		this.energyWeatherTimeLeft = 0;
 		this.clearingWeatherTimeLeft = 0;
+		this.cataclysmWeatherTimeLeft = 0;
 		this.climateWeatherMinTimeLeft = 0;
 		this.irritantWeatherMinTimeLeft = 0;
 		this.energyWeatherMinTimeLeft = 0;
 		this.clearingWeatherMinTimeLeft = 0;
+		this.cataclysmWeatherMinTimeLeft = 0;
 		this.activeWeathers = [];
 		this.pseudoWeather = [];
 		this.lastMove = '';
@@ -1567,6 +1573,45 @@ export class Battle {
 		this.clearingWeather = weather;
 		this.scene.updateWeather();
 	}
+	changeCataclysmWeather(weatherName: string, poke?: Pokemon, isUpkeep?: boolean, ability?: Effect) {
+		let weather = toID(weatherName);
+		if (!weather || weather === 'none') {
+			const indexToRemove = this.activeWeathers.indexOf(weather);
+			if (indexToRemove !== -1) {
+				this.activeWeathers.splice(indexToRemove, 1);
+			}
+			weather = '' as ID;
+		}
+		if (isUpkeep) {
+			if (this.cataclysmWeather && this.cataclysmWeatherTimeLeft) {
+				this.cataclysmWeatherTimeLeft--;
+				if (this.cataclysmWeatherMinTimeLeft !== 0) this.cataclysmWeatherMinTimeLeft--;
+			}
+			if (this.seeking === null) {
+				this.scene.upkeepCataclysmWeather();
+			}
+			return;
+		}
+		if (weather) {
+			let isExtremeWeather = (weather === 'cataclysmiclight');
+			if (poke) {
+				if (ability) {
+					this.activateAbility(poke, ability.name);
+				}
+				this.cataclysmWeatherTimeLeft = (this.gen <= 5 || isExtremeWeather) ? 0 : 8;
+				this.cataclysmWeatherMinTimeLeft = (this.gen <= 5 || isExtremeWeather) ? 0 : 5;
+				this.activeWeathers.push(weather);
+			} else if (isExtremeWeather) {
+				this.cataclysmWeatherTimeLeft = 0;
+				this.cataclysmWeatherMinTimeLeft = 0;
+			} else {
+				this.cataclysmWeatherTimeLeft = (this.gen <= 3 ? 5 : 8);
+				this.cataclysmWeatherMinTimeLeft = (this.gen <= 3 ? 0 : 5);
+			}
+		}
+		this.cataclysmWeather = weather;
+		this.scene.updateWeather();
+	}
 	getRecentWeather(item: string | null = null) {
 		for (let i = this.activeWeathers.length - 1; i >= 0; i--) {
 			const recentWeather = this.activeWeathers[i];
@@ -1598,6 +1643,7 @@ export class Battle {
 				if (item !== 'energynullifier') return recentWeather;
 				break;
 			case 'strongwinds':
+			case 'cataclysmiclight':
 				return recentWeather;
 			}
 		}
@@ -3304,6 +3350,17 @@ export class Battle {
 				kwArgs.from = this.clearingWeather;
 			}
 			this.changeClearingWeather(effect.name, poke, !!kwArgs.upkeep, ability);
+			this.log(args, kwArgs);
+			break;
+		}
+		case '-cataclysmWeather': {
+			let effect = Dex.getEffect(args[1]);
+			let poke = this.getPokemon(kwArgs.of) || undefined;
+			let ability = Dex.getEffect(kwArgs.from);
+			if (!effect.id || effect.id === 'none') {
+				kwArgs.from = this.cataclysmWeather;
+			}
+			this.changeCataclysmWeather(effect.name, poke, !!kwArgs.upkeep, ability);
 			this.log(args, kwArgs);
 			break;
 		}

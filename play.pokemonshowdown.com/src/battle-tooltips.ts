@@ -21,6 +21,7 @@ class ModifiableValue {
 	irritantWeatherName: string;
 	energyWeatherName: string;
 	clearingWeatherName: string;
+	cataclysmWeatherName: string;
 	isAccuracy = false;
 	constructor(battle: Battle, pokemon: Pokemon, serverPokemon: ServerPokemon) {
 		this.comment = [];
@@ -40,6 +41,8 @@ class ModifiableValue {
 			this.battle.dex.moves.get(battle.energyWeather).name : this.battle.dex.abilities.get(battle.energyWeather).name;
 		this.clearingWeatherName = this.battle.dex.moves.get(battle.clearingWeather).exists ?
 			this.battle.dex.moves.get(battle.clearingWeather).name : this.battle.dex.abilities.get(battle.clearingWeather).name;
+		this.cataclysmWeatherName = this.battle.dex.moves.get(battle.cataclysmWeather).exists ?
+			this.battle.dex.moves.get(battle.cataclysmWeather).name : this.battle.dex.abilities.get(battle.cataclysmWeather).name;
 	}
 	reset(value = 0, isAccuracy?: boolean) {
 		this.value = value;
@@ -132,6 +135,20 @@ class ModifiableValue {
 		}
 		return true;
 	}
+	tryCataclysmWeather(weatherName?: string) {
+		if (!this.cataclysmWeatherName) return false;
+		if (!weatherName) weatherName = this.cataclysmWeatherName;
+		else if (weatherName !== this.cataclysmWeatherName) return false;
+		for (const side of this.battle.sides) {
+			for (const active of side.active) {
+				if (active && ['Nullify'].includes(active.ability)) {
+					this.comment.push(` (${weatherName} suppressed by ${active.ability})`);
+					return false;
+				}
+			}
+		}
+		return true;
+	}
 	itemModify(factor: number, itemName?: string) {
 		if (!itemName) itemName = this.itemName;
 		if (!itemName) return false;
@@ -164,6 +181,12 @@ class ModifiableValue {
 		if (!weatherName) weatherName = this.clearingWeatherName;
 		if (!weatherName) return false;
 		if (!this.tryClearingWeather(weatherName)) return false;
+		return this.modify(factor, name || weatherName);
+	}
+	cataclysmWeatherModify(factor: number, weatherName?: string, name?: string) {
+		if (!weatherName) weatherName = this.cataclysmWeatherName;
+		if (!weatherName) return false;
+		if (!this.tryCataclysmWeather(weatherName)) return false;
 		return this.modify(factor, name || weatherName);
 	}
 	modify(factor: number, name?: string) {
@@ -1089,6 +1112,7 @@ class BattleTooltips {
 		let irritantweatherbuf = scene.irritantWeatherLeft() || `(No active Irritant Weathergy)`;
 		let energyweatherbuf = scene.energyWeatherLeft() || `(No active Energy Weathergy)`;
 		let clearingweatherbuf = scene.clearingWeatherLeft() || `(No active Clearing Weathergy)`;
+		let cataclysmweatherbuf = scene.cataclysmWeatherLeft() || `(No active Cataclysm Weathergy)`;
 		while (climateweatherbuf.startsWith('<br />')) {
 			climateweatherbuf = climateweatherbuf.slice(6);
 		}
@@ -1101,7 +1125,10 @@ class BattleTooltips {
 		while (clearingweatherbuf.startsWith('<br />')) {
 			clearingweatherbuf = clearingweatherbuf.slice(6);
 		}
-		buf = `<p>${climateweatherbuf}</p>` + `<p>${irritantweatherbuf}</p>` + `<p>${energyweatherbuf}</p>` + `<p>${clearingweatherbuf}</p>` + buf;
+		while (cataclysmweatherbuf.startsWith('<br />')) {
+			cataclysmweatherbuf = cataclysmweatherbuf.slice(6);
+		}
+		buf = `<p>${climateweatherbuf}</p>` + `<p>${irritantweatherbuf}</p>` + `<p>${energyweatherbuf}</p>` + `<p>${clearingweatherbuf}</p>` + `<p>${cataclysmweatherbuf}</p>` + buf;
 		return `<p>${buf}</p>`;
 	}
 
@@ -1242,6 +1269,7 @@ class BattleTooltips {
 		let irritantWeather = this.battle.irritantWeather;
 		let energyWeather = this.battle.energyWeather;
 		let clearingWeather = this.battle.clearingWeather;
+		let cataclysmWeather = this.battle.cataclysmWeather;
 		if (this.battle.abilityActive(['Air Lock', 'Cloud Nine'])) {
 			climateWeather = '' as ID;
 		}
@@ -1872,6 +1900,13 @@ class BattleTooltips {
 				break;
 			}
 		}
+		if (move.id === 'weatherball' && value.cataclysmWeatherModify(0)) {
+			switch (this.battle.getRecentWeather(item.id)) {
+			case 'cataclysmiclight':
+				moveType = '???';
+				break;
+			}
+		}
 		if (move.id === 'terrainpulse' && pokemon.isGrounded(serverPokemon)) {
 			if (this.battle.hasPseudoWeather('Electric Terrain')) {
 				moveType = 'Electric';
@@ -2310,6 +2345,9 @@ class BattleTooltips {
 				break;
 			case this.battle.clearingWeather:
 				value.clearingWeatherModify(2);
+				break;
+			case this.battle.cataclysmWeather:
+				value.cataclysmWeatherModify(2);
 				break;
 			}
 		}

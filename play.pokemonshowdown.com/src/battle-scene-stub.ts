@@ -58,6 +58,7 @@ export class BattleSceneStub {
 	upkeepIrritantWeather(): void { }
 	upkeepEnergyWeather(): void { }
 	upkeepClearingWeather(): void { }
+	upkeepCataclysmWeather(): void { }
 	wait(time: number): void { }
 	setFrameHTML(html: any): void { }
 	setControlsHTML(html: any): void { }

@@ -57,6 +57,7 @@ export class BattleScene implements BattleSceneStub {
 	$irritantWeather: JQuery = null!;
 	$energyWeather: JQuery = null!;
 	$clearingWeather: JQuery = null!;
+	$cataclysmWeather: JQuery = null!;
 	$bgEffect: JQuery = null!;
 	$bg: JQuery = null!;
 	$sprite: JQuery = null!;
@@ -89,6 +90,7 @@ export class BattleScene implements BattleSceneStub {
 	curIrritantWeather = '';
 	curEnergyWeather = '';
 	curClearingWeather = '';
+	curCataclysmWeather = '';
 	curTerrain = '';
 
 	// Animation state
@@ -160,6 +162,7 @@ export class BattleScene implements BattleSceneStub {
 		this.$irritantWeather = $('<div class="weather"></div>');
 		this.$energyWeather = $('<div class="weather"></div>');
 		this.$clearingWeather = $('<div class="weather"></div>');
+		this.$cataclysmWeather = $('<div class="weather"></div>');
 		this.$bgEffect = $('<div></div>');
 		this.$sprite = $('<div></div>');
 
@@ -187,6 +190,7 @@ export class BattleScene implements BattleSceneStub {
 		this.$battle.append(this.$irritantWeather);
 		this.$battle.append(this.$energyWeather);
 		this.$battle.append(this.$clearingWeather);
+		this.$battle.append(this.$cataclysmWeather);
 		this.$battle.append(this.$bgEffect);
 		this.$battle.append(this.$sprite);
 		this.$battle.append(this.$stat);
@@ -211,6 +215,7 @@ export class BattleScene implements BattleSceneStub {
 		this.curIrritantWeather = '';
 		this.curEnergyWeather = '';
 		this.curClearingWeather = '';
+		this.curCataclysmWeather = '';
 
 		this.log.battleParser!.perspective = this.battle.mySide.sideid;
 
@@ -1046,7 +1051,7 @@ export class BattleScene implements BattleSceneStub {
 
 		return weatherhtml;
 	}
-	clearingWeatherLeft() { // also includes psuedoweathers
+	clearingWeatherLeft() {
 		if (this.battle.gen < 7 && this.battle.hardcoreMode) return '';
 
 		let weatherhtml = ``;
@@ -1068,6 +1073,39 @@ export class BattleScene implements BattleSceneStub {
 				weatherhtml = `<br />` + weatherhtml;
 			}
 			if (this.energyWeatherLeft()) {
+				weatherhtml = `<br />` + weatherhtml;
+			}
+			const nullifyWeather = this.battle.abilityActive('Nullify');
+			weatherhtml = `${nullifyWeather ? '<s>' : ''}${weatherhtml}${nullifyWeather ? '</s>' : ''}`;
+		}
+
+		return weatherhtml;
+	}
+	cataclysmWeatherLeft() { // also includes psuedoweathers
+		if (this.battle.gen < 7 && this.battle.hardcoreMode) return '';
+
+		let weatherhtml = ``;
+
+		if (this.battle.cataclysmWeather) {
+			const weatherNameTable: {[id: string]: string} = {
+				strongwinds: 'Strong Winds',
+			};
+			weatherhtml = `${weatherNameTable[this.battle.cataclysmWeather] || this.battle.cataclysmWeather}`;
+			if (this.battle.cataclysmWeatherMinTimeLeft !== 0) {
+				weatherhtml += ` <small>(${this.battle.cataclysmWeatherMinTimeLeft} or ${this.battle.cataclysmWeatherTimeLeft} turns)</small>`;
+			} else if (this.battle.clearingWeatherTimeLeft !== 0) {
+				weatherhtml += ` <small>(${this.battle.cataclysmWeatherTimeLeft} turn${this.battle.cataclysmWeatherTimeLeft === 1 ? '' : 's'})</small>`;
+			}
+			if (this.climateWeatherLeft()) {
+				weatherhtml = `<br />` + weatherhtml;
+			}
+			if (this.irritantWeatherLeft()) {
+				weatherhtml = `<br />` + weatherhtml;
+			}
+			if (this.energyWeatherLeft()) {
+				weatherhtml = `<br />` + weatherhtml;
+			}
+			if (this.clearingWeatherLeft()) {
 				weatherhtml = `<br />` + weatherhtml;
 			}
 			const nullifyWeather = this.battle.abilityActive('Nullify');
@@ -1116,6 +1154,13 @@ export class BattleScene implements BattleSceneStub {
 			opacity: 0.5,
 		}, 300);
 	}
+	upkeepCataclysmWeather() {
+		this.$cataclysmWeather.animate({
+			opacity: 1.0,
+		}, 300).animate({
+			opacity: 0.5,
+		}, 300);
+	}
 	updateWeather(instant?: boolean) {
 		if (!this.animating) return;
 		let isIntense = false;
@@ -1123,6 +1168,7 @@ export class BattleScene implements BattleSceneStub {
 		let irritantWeather = this.battle.irritantWeather;
 		let energyWeather = this.battle.energyWeather;
 		let clearingWeather = this.battle.clearingWeather;
+		let cataclysmWeather = this.battle.cataclysmWeather;
 		if (this.battle.abilityActive(['Air Lock', 'Cloud Nine', 'Nullify'])) {
 			climateWeather = '' as ID;
 		}
@@ -1138,39 +1184,42 @@ export class BattleScene implements BattleSceneStub {
 		let irritantWeatherhtml = this.irritantWeatherLeft();
 		let energyWeatherhtml = this.energyWeatherLeft();
 		let clearingWeatherhtml = this.clearingWeatherLeft();
+		let cataclysmWeatherhtml = this.cataclysmWeatherLeft();
 		for (const side of this.battle.sides) {
-			climateWeatherhtml += this.sideConditionsLeft(side);
-			irritantWeatherhtml += this.sideConditionsLeft(side);
-			energyWeatherhtml += this.sideConditionsLeft(side);
-			clearingWeatherhtml += this.sideConditionsLeft(side);
+			cataclysmWeatherhtml += this.sideConditionsLeft(side);
 		}
 		if (climateWeatherhtml) climateWeatherhtml = `<br />` + climateWeatherhtml;
 		if (irritantWeatherhtml) irritantWeatherhtml = `<br />` + irritantWeatherhtml;
 		if (energyWeatherhtml) energyWeatherhtml = `<br />` + energyWeatherhtml;
 		if (clearingWeatherhtml) clearingWeatherhtml = `<br />` + clearingWeatherhtml;
+		if (cataclysmWeatherhtml) cataclysmWeatherhtml = `<br />` + cataclysmWeatherhtml;
 
 		if (instant) {
 			this.$climateWeather.html('<em>' + climateWeatherhtml + '</em>');
 			this.$irritantWeather.html('<em>' + irritantWeatherhtml + '</em>');
 			this.$energyWeather.html('<em>' + energyWeatherhtml + '</em>');
 			this.$clearingWeather.html('<em>' + clearingWeatherhtml + '</em>');
+			this.$cataclysmWeather.html('<em>' + cataclysmWeatherhtml + '</em>');
 			if (this.curClimateWeather === climateWeather && this.curIrritantWeather === irritantWeather &&
 				this.curEnergyWeather === energyWeather && this.curClearingWeather === clearingWeather &&
-				this.curTerrain === terrain) return;
+				this.curCataclysmWeather === cataclysmWeather && this.curTerrain === terrain) return;
 			this.$terrain.attr('class', terrain ? 'weather ' + terrain + 'weather' : 'weather');
 			this.curTerrain = terrain;
 			this.$climateWeather.attr('class', climateWeather ? 'weather ' + climateWeather + 'weather' : 'weather');
 			this.$irritantWeather.attr('class', irritantWeather ? 'weather ' + irritantWeather + 'weather' : 'weather');
 			this.$energyWeather.attr('class', energyWeather ? 'weather ' + energyWeather + 'weather' : 'weather');
 			this.$clearingWeather.attr('class', clearingWeather ? 'weather ' + clearingWeather + 'weather' : 'weather');
+			this.$cataclysmWeather.attr('class', cataclysmWeather ? 'weather ' + cataclysmWeather + 'weather' : 'weather');
 			this.$climateWeather.css('opacity', isIntense || !climateWeather ? 0.9 : 0.5);
 			this.$irritantWeather.css('opacity', !irritantWeather ? 0.9 : 0.5);
 			this.$energyWeather.css('opacity', !energyWeather ? 0.9 : 0.5);
 			this.$clearingWeather.css('opacity', !clearingWeather ? 0.9 : 0.5);
+			this.$cataclysmWeather.css('opacity', !cataclysmWeather ? 0.9 : 0.5);
 			this.curClimateWeather = climateWeather;
 			this.curIrritantWeather = irritantWeather;
 			this.curEnergyWeather = energyWeather;
 			this.curClearingWeather = clearingWeather;
+			this.curCataclysmWeather = cataclysmWeather;
 			return;
 		}
 
@@ -1224,6 +1273,19 @@ export class BattleScene implements BattleSceneStub {
 			this.curClearingWeather = clearingWeather;
 		} else {
 			this.$clearingWeather.html('<em>' + clearingWeatherhtml + '</em>');
+		}
+
+		if (cataclysmWeather !== this.curCataclysmWeather) {
+			this.$cataclysmWeather.animate({
+				opacity: 0,
+			}, this.curCataclysmWeather ? 300 : 100, () => {
+				this.$cataclysmWeather.html('<em>' + cataclysmWeatherhtml + '</em>');
+				this.$cataclysmWeather.attr('class', cataclysmWeather ? 'weather ' + cataclysmWeather + 'weather' : 'weather');
+				this.$cataclysmWeather.animate({opacity: !cataclysmWeather ? 0.9 : 0.5}, 300);
+			});
+			this.curCataclysmWeather = cataclysmWeather;
+		} else {
+			this.$cataclysmWeather.html('<em>' + cataclysmWeatherhtml + '</em>');
 		}
 
 		if (terrain !== this.curTerrain) {
