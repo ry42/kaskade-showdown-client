@@ -1929,6 +1929,16 @@ class BattleTooltips {
 		if (move.id === 'aurawheel' && pokemon.getSpeciesForme() === 'Morpeko-Hangry') {
 			moveType = 'Dark';
 		}
+
+		// Frostburn Claw's type depends on global turn count
+		if (move.id === 'frostburnclaw') {
+			if (this.battle.turn % 2 === 1) {
+				moveType = 'Fire';
+			} else {
+				moveType = 'Ice';
+			}
+		}
+		
 		// Raging Bull's type depends on the Tauros forme
 		if (move.id === 'ragingbull') {
 			switch (pokemon.getSpeciesForme()) {
