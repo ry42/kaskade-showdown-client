@@ -1088,7 +1088,7 @@ export class BattleScene implements BattleSceneStub {
 
 		if (this.battle.cataclysmWeather) {
 			const weatherNameTable: {[id: string]: string} = {
-				strongwinds: 'Strong Winds',
+				cataclysmiclight: 'Cataclysmic Light',
 			};
 			weatherhtml = `${weatherNameTable[this.battle.cataclysmWeather] || this.battle.cataclysmWeather}`;
 			if (this.battle.cataclysmWeatherMinTimeLeft !== 0) {
@@ -1110,6 +1110,10 @@ export class BattleScene implements BattleSceneStub {
 			}
 			const nullifyWeather = this.battle.abilityActive('Nullify');
 			weatherhtml = `${nullifyWeather ? '<s>' : ''}${weatherhtml}${nullifyWeather ? '</s>' : ''}`;
+		} else {
+			if (this.battle.activeWeathers.length > 0) {
+				weatherhtml = `<br />`.repeat(this.battle.activeWeathers.length-1) + weatherhtml;
+			}
 		}
 
 		for (const pseudoWeather of this.battle.pseudoWeather) {
@@ -1171,6 +1175,12 @@ export class BattleScene implements BattleSceneStub {
 		let cataclysmWeather = this.battle.cataclysmWeather;
 		if (this.battle.abilityActive(['Air Lock', 'Cloud Nine', 'Nullify'])) {
 			climateWeather = '' as ID;
+		}
+		if (this.battle.abilityActive('Nullify')) {
+			irritantWeather = '' as ID;
+			energyWeather = '' as ID;
+			clearingWeather = '' as ID;
+			cataclysmWeather = '' as ID;
 		}
 		let terrain = '' as ID;
 		for (const pseudoWeatherData of this.battle.pseudoWeather) {

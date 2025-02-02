@@ -1286,9 +1286,6 @@ class BattleTooltips {
 		if (climateWeather) {
 			if (item !== 'utilityumbrella') {
 				if (climateWeather === 'sunnyday' || climateWeather === 'desolateland') {
-					if (this.pokemonHasType(pokemon, 'Grass')) {
-						stats.spd = Math.floor(stats.spd * 1.25);
-					}
 					if (ability === 'chlorophyll') {
 						speedModifiers.push(2);
 					}
@@ -1314,9 +1311,6 @@ class BattleTooltips {
 					}
 				}
 				if (climateWeather === 'raindance' || climateWeather === 'primordialsea') {
-					if (this.pokemonHasType(pokemon, 'Grass')) {
-						stats.def = Math.floor(stats.def * 1.25);
-					}
 					if (ability === 'swiftswim') {
 						speedModifiers.push(2);
 					}
@@ -1938,7 +1932,7 @@ class BattleTooltips {
 				moveType = 'Ice';
 			}
 		}
-		
+
 		// Raging Bull's type depends on the Tauros forme
 		if (move.id === 'ragingbull') {
 			switch (pokemon.getSpeciesForme()) {
@@ -2507,6 +2501,7 @@ class BattleTooltips {
 		if (moveType === 'Fairy') {
 			value.abilityModify(1.3, "Chakra");
 		}
+		let amazeAssaultBP = 90;
 		if (serverPokemon.item !== 'utilityumbrella') {
 			if ('Ice'.includes(moveType) && this.battle.climateWeather === 'hail') {
 				if (value.tryAbility("Absolute Zero")) value.climateWeatherModify(1.3, "Hail", "Absolute Zero");
@@ -2514,6 +2509,7 @@ class BattleTooltips {
 			if ('Ice'.includes(moveType) && this.battle.climateWeather === 'snow') {
 				if (value.tryAbility("Absolute Zero")) value.climateWeatherModify(1.3, "Snow", "Absolute Zero");
 			}
+			if (this.battle.climateWeather) amazeAssaultBP += 15;
 		}
 		if (serverPokemon.item !== 'safetygoggles') {
 			if (['Rock', 'Ground', 'Steel'].includes(moveType) && this.battle.irritantWeather === 'sandstorm') {
@@ -2525,6 +2521,8 @@ class BattleTooltips {
 			if (['Fairy', 'Grass', 'Fire', 'Water'].includes(moveType) && (this.battle.irritantWeather === 'sprinkle')) {
 				if (value.tryAbility("Power Above")) value.irritantWeatherModify(1.3, "Fairy Dust", "Power Above");
 			}
+			if (this.battle.irritantWeather) amazeAssaultBP += 15;
+
 		}
 		if (serverPokemon.item !== 'energynullifier') {
 			if (move.category === 'Special' && (this.battle.energyWeather === 'daydream')) {
@@ -2533,7 +2531,11 @@ class BattleTooltips {
 			if (['Dragon', 'Fire', 'Electric', 'Ice'].includes(moveType) && (this.battle.energyWeather === 'dragonforce')) {
 				if (value.tryAbility("Power Within")) value.energyWeatherModify(1.3, "Dragon Force", "Power Within");
 			}
+			if (this.battle.energyWeather) amazeAssaultBP += 15;
 		}
+		if (this.battle.clearingWeather) amazeAssaultBP += 15;
+		if (this.battle.cataclysmWeather) amazeAssaultBP += 15;
+		if (move.id === 'amazeassault') value.set(amazeAssaultBP);
 		const noTypeOverride = [
 			'judgment', 'multiattack', 'naturalgift', 'revelationdance', 'struggle', 'technoblast', 'terrainpulse', 'weatherball',
 		];

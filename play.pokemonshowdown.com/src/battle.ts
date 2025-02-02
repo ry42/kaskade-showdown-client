@@ -1438,7 +1438,12 @@ export class Battle {
 		}
 		if (weather) {
 			let isExtremeWeather = (weather === 'deltastream' || weather === 'desolateland' || weather === 'primordialsea');
-			if (poke) {
+			if (ability && ability.effectType === 'Move') {
+				if (this.climateWeather && this.climateWeatherTimeLeft) {
+					this.climateWeatherTimeLeft++;
+					if (this.climateWeatherMinTimeLeft !== 0) this.climateWeatherMinTimeLeft++;
+				}
+			} else if (poke) {
 				if (ability) {
 					this.activateAbility(poke, ability.name);
 				}
@@ -1477,7 +1482,12 @@ export class Battle {
 		}
 		if (weather) {
 			let isExtremeWeather = (weather === 'deltastream' || weather === 'desolateland' || weather === 'primordialsea');
-			if (poke) {
+			if (ability && ability.effectType === 'Move') {
+				if (this.irritantWeather && this.irritantWeatherTimeLeft) {
+					this.irritantWeatherTimeLeft++;
+					if (this.irritantWeatherMinTimeLeft !== 0) this.irritantWeatherMinTimeLeft++;
+				}
+			} else if (poke) {
 				if (ability) {
 					this.activateAbility(poke, ability.name);
 				}
@@ -1516,7 +1526,12 @@ export class Battle {
 		}
 		if (weather) {
 			let isExtremeWeather = (weather === 'deltastream' || weather === 'desolateland' || weather === 'primordialsea');
-			if (poke) {
+			if (ability && ability.effectType === 'Move') {
+				if (this.energyWeather && this.energyWeatherTimeLeft) {
+					this.energyWeatherTimeLeft++;
+					if (this.energyWeatherMinTimeLeft !== 0) this.energyWeatherMinTimeLeft++;
+				}
+			} else if (poke) {
 				if (ability) {
 					this.activateAbility(poke, ability.name);
 				}
@@ -1555,7 +1570,12 @@ export class Battle {
 		}
 		if (weather) {
 			let isExtremeWeather = (weather === 'deltastream' || weather === 'desolateland' || weather === 'primordialsea');
-			if (poke) {
+			if (ability && ability.effectType === 'Move') {
+				if (this.clearingWeather && this.clearingWeatherTimeLeft) {
+					this.clearingWeatherTimeLeft++;
+					if (this.clearingWeatherMinTimeLeft !== 0) this.clearingWeatherMinTimeLeft++;
+				}
+			} else if (poke) {
 				if (ability) {
 					this.activateAbility(poke, ability.name);
 				}
