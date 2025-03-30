@@ -702,7 +702,7 @@ const BattlePokemonIconIndexes: {[id: string]: number} = {
 	kleptarak: 1608 + 74,
 	kituff: 1608 + 75,
 	beadamup: 1608 + 76,
-	rascoom: 1608 + 77,
+	rascume: 1608 + 77,
 	faebril: 1608 + 78,
 	bokshel: 1608 + 79,
 	hermirt: 1608 + 80,
