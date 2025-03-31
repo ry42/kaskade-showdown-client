@@ -143,7 +143,8 @@ const BattleStatNames = {
 } as const;
 
 const BattleBaseSpeciesChart = [
-	"unown", "burmy", "shellos", "gastrodon", "deerling", "sawsbuck", "vivillon", "flabebe", "floette", "florges", "furfrou", "minior", "alcremie", "tatsugiri", "pokestarufo", "pokestarbrycenman", "pokestarmt", "pokestarmt2", "pokestartransport", "pokestargiant", "pokestarhumanoid", "pokestarmonster", "pokestarf00", "pokestarf002", "pokestarspirit", "pokestarblackdoor", "pokestarwhitedoor", "pokestarblackbelt",
+	"unown", "burmy", "shellos", "gastrodon", "deerling", "sawsbuck", "vivillon", "flabebe", "floette", "florges", "furfrou", "minior", "alcremie", "tatsugiri", "botnyak",
+	"pokestarufo", "pokestarbrycenman", "pokestarmt", "pokestarmt2", "pokestartransport", "pokestargiant", "pokestarhumanoid", "pokestarmonster", "pokestarf00", "pokestarf002", "pokestarspirit", "pokestarblackdoor", "pokestarwhitedoor", "pokestarblackbelt",
 ] as ID[];
 
 const BattlePokemonIconIndexes: {[id: string]: number} = {
@@ -240,19 +241,19 @@ const BattlePokemonIconIndexes: {[id: string]: number} = {
 	vivillonsun: 1032 + 90,
 	vivillontundra: 1032 + 91,
 	pyroarf: 1032 + 92,
-	flabebeblue: 1032 + 93,
-	flabebeorange: 1032 + 94,
-	flabebewhite: 1032 + 95,
-	flabebeyellow: 1032 + 96,
-	floetteblue: 1032 + 97,
-	floetteeternal: 1032 + 98,
-	floetteorange: 1032 + 99,
+	flabebeorange: 1032 + 93,
+	flabebeyellow: 1032 + 94,
+	flabebeblue: 1032 + 95,
+	flabebewhite: 1032 + 96,
+	floetteorange: 1032 + 97,
+	floetteyellow: 1032 + 98,
+	floetteblue: 1032 + 99,
 	floettewhite: 1032 + 100,
-	floetteyellow: 1032 + 101,
-	florgesblue: 1032 + 102,
-	florgesorange: 1032 + 103,
-	florgeswhite: 1032 + 104,
-	florgesyellow: 1032 + 105,
+	floetteeternal: 1032 + 101,
+	florgesorange: 1032 + 102,
+	florgesyellow: 1032 + 103,
+	florgesblue: 1032 + 104,
+	florgeswhite: 1032 + 105,
 	furfroudandy: 1032 + 106,
 	furfroudebutante: 1032 + 107,
 	furfroudiamond: 1032 + 108,

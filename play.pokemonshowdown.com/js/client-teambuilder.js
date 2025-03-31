@@ -2216,6 +2216,7 @@
 				switch (species.baseSpecies) {
 				case 'Alcremie':
 				case 'Basculin':
+				case 'Botnyak':
 				case 'Burmy':
 				case 'Castform':
 				case 'Cherrim':
