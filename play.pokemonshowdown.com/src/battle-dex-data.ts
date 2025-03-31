@@ -820,9 +820,16 @@ const BattlePokemonIconIndexes: {[id: string]: number} = {
 	catteraxef: 1800 + 3,
 	blurruncharged: 1800 + 4,
 	droutdry: 1800 + 5,
-	tamroastf: 1800 + 6,
-	weepollenf: 1800 + 7,
-	bearvoyancewhite: 1800 + 8,
+	auditarf: 1800 + 6,
+	oxilleryf: 1800 + 7,
+	tamroastf: 1800 + 8,
+	weepollenf: 1800 + 9,
+	bearvoyancewhite: 1800 + 10,
+	// botnyak?: 1800 + 11,
+	// botnyak?: 1800 + 12,
+	// botnyak?: 1800 + 13,
+	// botnyak?: 1800 + 14,
+	// botnyak?: 1800 + 15,
 };
 
 const BattlePokemonIconIndexesLeft: {[id: string]: number} = {
