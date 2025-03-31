@@ -826,11 +826,11 @@ const BattlePokemonIconIndexes: {[id: string]: number} = {
 	tamroastf: 1800 + 8,
 	weepollenf: 1800 + 9,
 	bearvoyancewhite: 1800 + 10,
-	// botnyak?: 1800 + 11,
-	// botnyak?: 1800 + 12,
-	// botnyak?: 1800 + 13,
-	// botnyak?: 1800 + 14,
-	// botnyak?: 1800 + 15,
+	botnyaklr: 1800 + 11,
+	botnyaklg: 1800 + 12,
+	botnyakdb: 1800 + 13,
+	botnyakdr: 1800 + 14,
+	botnyakdg: 1800 + 15,
 };
 
 const BattlePokemonIconIndexesLeft: {[id: string]: number} = {
