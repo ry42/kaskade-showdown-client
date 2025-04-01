@@ -19,9 +19,9 @@ Config.whitelist = [
 // address bar is `Config.routes.client`.
 Config.defaultserver = {
 	id: 'showdown',
-	host: 'sim3.psim.us',
+	host: 'kaskadeshowdown.dynv6.net',
 	port: 443,
-	httpport: 8000,
+	httpport: 80,
 	altport: 80,
 	registered: true
 };
