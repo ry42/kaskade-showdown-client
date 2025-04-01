@@ -19,7 +19,7 @@ Config.whitelist = [
 // address bar is `Config.routes.client`.
 Config.defaultserver = {
 	id: 'showdown',
-	host: 'kaskadeshowdown.dynv6.net',
+	host: 'api.kaskadeshowdown.dynv6.net',
 	port: 443,
 	httpport: 80,
 	altport: 80,
