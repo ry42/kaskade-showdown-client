@@ -923,11 +923,11 @@ const BattlePokemonIconIndexes: {[id: string]: number} = {
 	oxilleryf: 1779 + 7,
 	tamroastf: 1779 + 8,
 	weepollenf: 1779 + 9,
-	botnyaklr: 1800 + 10,
-	botnyaklg: 1800 + 11,
-	botnyakdb: 1800 + 12,
-	botnyakdr: 1800 + 13,
-	botnyakdg: 1800 + 14,
+	botnyaklr: 1779 + 10,
+	botnyaklg: 1779 + 11,
+	botnyakdb: 1779 + 12,
+	botnyakdr: 1779 + 13,
+	botnyakdg: 1779 + 14,
 	bearvoyancewhite: 1779 + 15,
 
 	// Alt forms with duplicate icons
