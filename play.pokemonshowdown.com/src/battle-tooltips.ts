@@ -1188,7 +1188,7 @@ class BattleTooltips {
 				stats.atk = Math.floor(stats.atk * 0.5);
 			}
 
-			if (pokemon.status === 'frb') {
+			if (pokemon.status === 'fst') {
 			stats.spa = Math.floor(stats.spa * 0.5);
 			}
 
@@ -2650,7 +2650,7 @@ class BattleTooltips {
 		if (this.battle.gen > 2 && serverPokemon.status === 'brn' && move.id !== 'facade' && move.category === 'Physical') {
 			if (!value.tryAbility("Guts")) value.modify(0.5, 'Burn');
 		}
-		if (serverPokemon.status === 'frb' && move.category === 'Special') {
+		if (serverPokemon.status === 'fst' && move.category === 'Special') {
 			value.modify(0.5, 'Frostbite');
 		}
 

@@ -3092,8 +3092,8 @@ export class PokemonSprite extends Sprite {
 			status += '<span class="par">PAR</span> ';
 		} else if (pokemon.status === 'frz') {
 			status += '<span class="frz">FRZ</span> ';
-		} else if (pokemon.status === 'frb') {
-			status += '<span class="frb">FRB</span> ';
+		} else if (pokemon.status === 'fst') {
+			status += '<span class="fst">fst</span> ';
 		}
 		if (pokemon.terastallized) {
 			status += `<img src="${Dex.resourcePrefix}sprites/types/${encodeURIComponent(pokemon.terastallized)}.png" alt="${pokemon.terastallized}" class="pixelated" /> `;
@@ -6486,7 +6486,7 @@ export const BattleStatusAnims: AnimTable = {
 			}, 'linear', 'fade');
 		},
 	},
-	frb: {
+	fst: {
 		anim(scene, [attacker]) {
 			scene.showEffect('bluefireball', {
 				x: attacker.x - 20,
