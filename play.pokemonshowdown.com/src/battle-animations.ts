@@ -2169,6 +2169,7 @@ export class PokemonSprite extends Sprite {
 		sunscreen: ['Sunscreen', 'good'],
 		resilientoil: ['Resilient Oil', 'good'],
 		caffeinecrash: ['Caffeine Crash', 'bad'],
+		possess: ['Possess', 'bad'],
 	};
 	forme = '';
 	cryurl: string | undefined = undefined;
