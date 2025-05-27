@@ -3093,7 +3093,7 @@ export class PokemonSprite extends Sprite {
 		} else if (pokemon.status === 'frz') {
 			status += '<span class="frz">FRZ</span> ';
 		} else if (pokemon.status === 'fst') {
-			status += '<span class="fst">fst</span> ';
+			status += '<span class="fst">FST</span> ';
 		}
 		if (pokemon.terastallized) {
 			status += `<img src="${Dex.resourcePrefix}sprites/types/${encodeURIComponent(pokemon.terastallized)}.png" alt="${pokemon.terastallized}" class="pixelated" /> `;
