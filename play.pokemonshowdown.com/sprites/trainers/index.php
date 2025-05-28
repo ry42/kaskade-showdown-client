@@ -5656,6 +5656,10 @@
 	<img loading="lazy" src="toddsnap2.png" alt="toddsnap2.png" title="toddsnap2.png" />
 	<figcaption><a href="toddsnap2.png">toddsnap2</a><br />by kyledove</figcaption>
 </figure>
+<figure id="tofrug-stack.png">
+	<img loading="lazy" src="tofrug-stack.png" alt="tofrug-stack.png" title="tofrug-stack.png" />
+	<figcaption><a href="tofrug-stack.png">tofrug-stack</a><br />by Myste</figcaption>
+</figure>
 <figure id="tourist.png">
 	<img loading="lazy" src="tourist.png" alt="tourist.png" title="tourist.png" />
 	<figcaption><a href="tourist.png">tourist</a><br />by kyledove</figcaption>
