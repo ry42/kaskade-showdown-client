@@ -1112,7 +1112,7 @@ export class BattleScene implements BattleSceneStub {
 			weatherhtml = `${nullifyWeather ? '<s>' : ''}${weatherhtml}${nullifyWeather ? '</s>' : ''}`;
 		} else {
 			if (this.battle.activeWeathers.length > 0) {
-				weatherhtml = `<br />`.repeat(this.battle.activeWeathers.length-1) + weatherhtml;
+				weatherhtml = `<br />`.repeat(this.battle.activeWeathers.length) + weatherhtml;
 			}
 		}
 
