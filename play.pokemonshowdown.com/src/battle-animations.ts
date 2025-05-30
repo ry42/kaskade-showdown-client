@@ -1093,7 +1093,7 @@ export class BattleScene implements BattleSceneStub {
 			weatherhtml = `${weatherNameTable[this.battle.cataclysmWeather] || this.battle.cataclysmWeather}`;
 			if (this.battle.cataclysmWeatherMinTimeLeft !== 0) {
 				weatherhtml += ` <small>(${this.battle.cataclysmWeatherMinTimeLeft} or ${this.battle.cataclysmWeatherTimeLeft} turns)</small>`;
-			} else if (this.battle.clearingWeatherTimeLeft !== 0) {
+			} else if (this.battle.cataclysmWeatherTimeLeft !== 0) {
 				weatherhtml += ` <small>(${this.battle.cataclysmWeatherTimeLeft} turn${this.battle.cataclysmWeatherTimeLeft === 1 ? '' : 's'})</small>`;
 			}
 			if (this.climateWeatherLeft()) {
