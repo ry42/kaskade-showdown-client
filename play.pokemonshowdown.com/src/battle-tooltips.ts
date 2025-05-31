@@ -1112,7 +1112,7 @@ class BattleTooltips {
 		let irritantweatherbuf = scene.irritantWeatherLeft() || `(No active Irritant Weathergy)`;
 		let energyweatherbuf = scene.energyWeatherLeft() || `(No active Energy Weathergy)`;
 		let clearingweatherbuf = scene.clearingWeatherLeft() || `(No active Clearing Weathergy)`;
-		let cataclysmweatherbuf = scene.cataclysmWeatherLeft() || `(No active Cataclysm Weathergy)`;
+		let cataclysmweatherbuf = scene.cataclysmWeatherLeft() + scene.pseudoWeathersLeft() || `(No active Cataclysm Weathergy)`;
 		while (climateweatherbuf.startsWith('<br />')) {
 			climateweatherbuf = climateweatherbuf.slice(6);
 		}

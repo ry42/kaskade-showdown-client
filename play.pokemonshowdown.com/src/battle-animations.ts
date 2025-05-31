@@ -1086,39 +1086,29 @@ export class BattleScene implements BattleSceneStub {
 
 		let weatherhtml = ``;
 
-		if (this.battle.cataclysmWeather) {
-			const weatherNameTable: {[id: string]: string} = {
-				cataclysmiclight: 'Cataclysmic Light',
-			};
-			weatherhtml = `${weatherNameTable[this.battle.cataclysmWeather] || this.battle.cataclysmWeather}`;
-			if (this.battle.cataclysmWeatherMinTimeLeft !== 0) {
-				weatherhtml += ` <small>(${this.battle.cataclysmWeatherMinTimeLeft} or ${this.battle.cataclysmWeatherTimeLeft} turns)</small>`;
-			} else if (this.battle.cataclysmWeatherTimeLeft !== 0) {
-				weatherhtml += ` <small>(${this.battle.cataclysmWeatherTimeLeft} turn${this.battle.cataclysmWeatherTimeLeft === 1 ? '' : 's'})</small>`;
-			}
-			if (this.climateWeatherLeft()) {
-				weatherhtml = `<br />` + weatherhtml;
-			}
-			if (this.irritantWeatherLeft()) {
-				weatherhtml = `<br />` + weatherhtml;
-			}
-			if (this.energyWeatherLeft()) {
-				weatherhtml = `<br />` + weatherhtml;
-			}
-			if (this.clearingWeatherLeft()) {
-				weatherhtml = `<br />` + weatherhtml;
-			}
-			const nullifyWeather = this.battle.abilityActive('Nullify');
-			weatherhtml = `${nullifyWeather ? '<s>' : ''}${weatherhtml}${nullifyWeather ? '</s>' : ''}`;
-		} else {
-			if (this.battle.activeWeathers.length > 0) {
-				weatherhtml = `<br />`.repeat(this.battle.activeWeathers.length) + weatherhtml;
-			}
+		const weatherNameTable: {[id: string]: string} = {
+			cataclysmiclight: 'Cataclysmic Light',
+		};
+		weatherhtml = `${weatherNameTable[this.battle.cataclysmWeather] || this.battle.cataclysmWeather}`;
+		if (this.battle.cataclysmWeatherMinTimeLeft !== 0) {
+			weatherhtml += ` <small>(${this.battle.cataclysmWeatherMinTimeLeft} or ${this.battle.cataclysmWeatherTimeLeft} turns)</small>`;
+		} else if (this.battle.cataclysmWeatherTimeLeft !== 0) {
+			weatherhtml += ` <small>(${this.battle.cataclysmWeatherTimeLeft} turn${this.battle.cataclysmWeatherTimeLeft === 1 ? '' : 's'})</small>`;
 		}
-
-		for (const pseudoWeather of this.battle.pseudoWeather) {
-			weatherhtml += this.pseudoWeatherLeft(pseudoWeather);
+		if (this.climateWeatherLeft()) {
+			weatherhtml = `<br />` + weatherhtml;
 		}
+		if (this.irritantWeatherLeft()) {
+			weatherhtml = `<br />` + weatherhtml;
+		}
+		if (this.energyWeatherLeft()) {
+			weatherhtml = `<br />` + weatherhtml;
+		}
+		if (this.clearingWeatherLeft()) {
+			weatherhtml = `<br />` + weatherhtml;
+		}
+		const nullifyWeather = this.battle.abilityActive('Nullify');
+		weatherhtml = `${nullifyWeather ? '<s>' : ''}${weatherhtml}${nullifyWeather ? '</s>' : ''}`;
 
 		return weatherhtml;
 	}
@@ -1126,6 +1116,13 @@ export class BattleScene implements BattleSceneStub {
 		let buf = ``;
 		for (const id in side.sideConditions) {
 			buf += this.sideConditionLeft(side.sideConditions[id], side.isFar, all);
+		}
+		return buf;
+	}
+	pseudoWeathersLeft() {
+		let buf = ``;
+		for (const pseudoWeather of this.battle.pseudoWeather) {
+			buf += this.pseudoWeatherLeft(pseudoWeather);
 		}
 		return buf;
 	}
@@ -1195,6 +1192,7 @@ export class BattleScene implements BattleSceneStub {
 		let energyWeatherhtml = this.energyWeatherLeft();
 		let clearingWeatherhtml = this.clearingWeatherLeft();
 		let cataclysmWeatherhtml = this.cataclysmWeatherLeft();
+		cataclysmWeatherhtml += this.pseudoWeathersLeft();
 		for (const side of this.battle.sides) {
 			cataclysmWeatherhtml += this.sideConditionsLeft(side);
 		}
