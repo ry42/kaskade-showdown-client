@@ -58,6 +58,7 @@ export class BattleScene implements BattleSceneStub {
 	$energyWeather: JQuery = null!;
 	$clearingWeather: JQuery = null!;
 	$cataclysmWeather: JQuery = null!;
+	$weatherText: JQuery = null!;
 	$bgEffect: JQuery = null!;
 	$bg: JQuery = null!;
 	$sprite: JQuery = null!;
@@ -1010,9 +1011,9 @@ export class BattleScene implements BattleSceneStub {
 			} else if (this.battle.irritantWeatherTimeLeft !== 0) {
 				weatherhtml += ` <small>(${this.battle.irritantWeatherTimeLeft} turn${this.battle.irritantWeatherTimeLeft === 1 ? '' : 's'})</small>`;
 			}
-			if (this.climateWeatherLeft()) {
+			/* if (this.climateWeatherLeft()) {
 				weatherhtml = `<br />` + weatherhtml;
-			}
+			} */
 			const nullifyWeather = this.battle.abilityActive('Nullify');
 			weatherhtml = `${nullifyWeather ? '<s>' : ''}${weatherhtml}${nullifyWeather ? '</s>' : ''}`;
 		}
@@ -1039,12 +1040,12 @@ export class BattleScene implements BattleSceneStub {
 			} else if (this.battle.energyWeatherTimeLeft !== 0) {
 				weatherhtml += ` <small>(${this.battle.energyWeatherTimeLeft} turn${this.battle.energyWeatherTimeLeft === 1 ? '' : 's'})</small>`;
 			}
-			if (this.climateWeatherLeft()) {
+			/* if (this.climateWeatherLeft()) {
 				weatherhtml = `<br />` + weatherhtml;
 			}
 			if (this.irritantWeatherLeft()) {
 				weatherhtml = `<br />` + weatherhtml;
-			}
+			} */
 			const nullifyWeather = this.battle.abilityActive('Nullify');
 			weatherhtml = `${nullifyWeather ? '<s>' : ''}${weatherhtml}${nullifyWeather ? '</s>' : ''}`;
 		}
@@ -1066,7 +1067,7 @@ export class BattleScene implements BattleSceneStub {
 			} else if (this.battle.clearingWeatherTimeLeft !== 0) {
 				weatherhtml += ` <small>(${this.battle.clearingWeatherTimeLeft} turn${this.battle.clearingWeatherTimeLeft === 1 ? '' : 's'})</small>`;
 			}
-			if (this.climateWeatherLeft()) {
+			/* if (this.climateWeatherLeft()) {
 				weatherhtml = `<br />` + weatherhtml;
 			}
 			if (this.irritantWeatherLeft()) {
@@ -1074,7 +1075,7 @@ export class BattleScene implements BattleSceneStub {
 			}
 			if (this.energyWeatherLeft()) {
 				weatherhtml = `<br />` + weatherhtml;
-			}
+			} */
 			const nullifyWeather = this.battle.abilityActive('Nullify');
 			weatherhtml = `${nullifyWeather ? '<s>' : ''}${weatherhtml}${nullifyWeather ? '</s>' : ''}`;
 		}
@@ -1096,7 +1097,7 @@ export class BattleScene implements BattleSceneStub {
 			} else if (this.battle.cataclysmWeatherTimeLeft !== 0) {
 				weatherhtml += ` <small>(${this.battle.cataclysmWeatherTimeLeft} turn${this.battle.cataclysmWeatherTimeLeft === 1 ? '' : 's'})</small>`;
 			}
-			if (this.climateWeatherLeft()) {
+			/* if (this.climateWeatherLeft()) {
 				weatherhtml = `<br />` + weatherhtml;
 			}
 			if (this.irritantWeatherLeft()) {
@@ -1107,7 +1108,7 @@ export class BattleScene implements BattleSceneStub {
 			}
 			if (this.clearingWeatherLeft()) {
 				weatherhtml = `<br />` + weatherhtml;
-			}
+			} */
 			const nullifyWeather = this.battle.abilityActive('Nullify');
 			weatherhtml = `${nullifyWeather ? '<s>' : ''}${weatherhtml}${nullifyWeather ? '</s>' : ''}`;
 		} /* else {
@@ -1135,7 +1136,7 @@ export class BattleScene implements BattleSceneStub {
 		return buf;
 	}
 	pseudoWeathersLeft() {
-		let buf = `<br /><br /><br />`;
+		let buf = ``;
 		for (const pseudoWeather of this.battle.pseudoWeather) {
 			buf += this.pseudoWeatherLeft(pseudoWeather);
 		}
@@ -1217,12 +1218,15 @@ export class BattleScene implements BattleSceneStub {
 		if (clearingWeatherhtml) clearingWeatherhtml = `<br />` + clearingWeatherhtml;
 		if (cataclysmWeatherhtml) cataclysmWeatherhtml = `<br />` + cataclysmWeatherhtml;
 
+		let weatherTexthtml = climateWeatherhtml + irritantWeatherhtml + energyWeatherhtml + clearingWeather + cataclysmWeatherhtml;
+
 		if (instant) {
-			this.$climateWeather.html('<em>' + climateWeatherhtml + '</em>');
+			/* this.$climateWeather.html('<em>' + climateWeatherhtml + '</em>');
 			this.$irritantWeather.html('<em>' + irritantWeatherhtml + '</em>');
 			this.$energyWeather.html('<em>' + energyWeatherhtml + '</em>');
 			this.$clearingWeather.html('<em>' + clearingWeatherhtml + '</em>');
-			this.$cataclysmWeather.html('<em>' + cataclysmWeatherhtml + '</em>');
+			this.$cataclysmWeather.html('<em>' + cataclysmWeatherhtml + '</em>'); */
+			this.$weatherText.html('<em>' + weatherTexthtml + '</em>');
 			if (this.curClimateWeather === climateWeather && this.curIrritantWeather === irritantWeather &&
 				this.curEnergyWeather === energyWeather && this.curClearingWeather === clearingWeather &&
 				this.curCataclysmWeather === cataclysmWeather && this.curTerrain === terrain) return;
@@ -1233,6 +1237,7 @@ export class BattleScene implements BattleSceneStub {
 			this.$energyWeather.attr('class', energyWeather ? 'weather ' + energyWeather + 'weather' : 'weather');
 			this.$clearingWeather.attr('class', clearingWeather ? 'weather ' + clearingWeather + 'weather' : 'weather');
 			this.$cataclysmWeather.attr('class', cataclysmWeather ? 'weather ' + cataclysmWeather + 'weather' : 'weather');
+			this.$weatherText.attr('class','weather weatherText');
 			this.$climateWeather.css('opacity', isIntense || !climateWeather ? 0.9 : 0.5);
 			this.$irritantWeather.css('opacity', !irritantWeather ? 0.9 : 0.5);
 			this.$energyWeather.css('opacity', !energyWeather ? 0.9 : 0.5);
@@ -1250,66 +1255,66 @@ export class BattleScene implements BattleSceneStub {
 			this.$climateWeather.animate({
 				opacity: 0,
 			}, this.curClimateWeather ? 300 : 100, () => {
-				this.$climateWeather.html('<em>' + climateWeatherhtml + '</em>');
+				//this.$climateWeather.html('<em>' + climateWeatherhtml + '</em>');
 				this.$climateWeather.attr('class', climateWeather ? 'weather ' + climateWeather + 'weather' : 'weather');
 				this.$climateWeather.animate({opacity: isIntense || !climateWeather ? 0.9 : 0.5}, 300);
 			});
 			this.curClimateWeather = climateWeather;
-		} else {
+		} /* else {
 			this.$climateWeather.html('<em>' + climateWeatherhtml + '</em>');
-		}
+		} */
 
 		if (irritantWeather !== this.curIrritantWeather) {
 			this.$irritantWeather.animate({
 				opacity: 0,
-			}, this.curIrritantWeather ? 600 : 100, () => {
-				this.$irritantWeather.html('<em>' + irritantWeatherhtml + '</em>');
+			}, this.curIrritantWeather ? 300 : 100, () => {
+				//this.$irritantWeather.html('<em>' + irritantWeatherhtml + '</em>');
 				this.$irritantWeather.attr('class', irritantWeather ? 'weather ' + irritantWeather + 'weather' : 'weather');
 				this.$irritantWeather.animate({opacity: !irritantWeather ? 0.9 : 0.5}, 300);
 			});
 			this.curIrritantWeather = irritantWeather;
-		} else {
+		} /* else {
 			this.$irritantWeather.html('<em>' + irritantWeatherhtml + '</em>');
-		}
+		} */
 
 		if (energyWeather !== this.curEnergyWeather) {
 			this.$energyWeather.animate({
 				opacity: 0,
 			}, this.curEnergyWeather ? 300 : 100, () => {
-				this.$energyWeather.html('<em>' + energyWeatherhtml + '</em>');
+				//this.$energyWeather.html('<em>' + energyWeatherhtml + '</em>');
 				this.$energyWeather.attr('class', energyWeather ? 'weather ' + energyWeather + 'weather' : 'weather');
 				this.$energyWeather.animate({opacity: !energyWeather ? 0.9 : 0.5}, 300);
 			});
 			this.curEnergyWeather = energyWeather;
-		} else {
+		} /* else {
 			this.$energyWeather.html('<em>' + energyWeatherhtml + '</em>');
-		}
+		} */
 
 		if (clearingWeather !== this.curClearingWeather) {
 			this.$clearingWeather.animate({
 				opacity: 0,
 			}, this.curClearingWeather ? 300 : 100, () => {
-				this.$clearingWeather.html('<em>' + clearingWeatherhtml + '</em>');
+				//this.$clearingWeather.html('<em>' + clearingWeatherhtml + '</em>');
 				this.$clearingWeather.attr('class', clearingWeather ? 'weather ' + clearingWeather + 'weather' : 'weather');
 				this.$clearingWeather.animate({opacity: !clearingWeather ? 0.9 : 0.5}, 300);
 			});
 			this.curClearingWeather = clearingWeather;
-		} else {
+		} /* else {
 			this.$clearingWeather.html('<em>' + clearingWeatherhtml + '</em>');
-		}
+		} */
 
 		if (cataclysmWeather !== this.curCataclysmWeather) {
 			this.$cataclysmWeather.animate({
 				opacity: 0,
 			}, this.curCataclysmWeather ? 300 : 100, () => {
-				this.$cataclysmWeather.html('<em>' + cataclysmWeatherhtml + '</em>');
+				//this.$cataclysmWeather.html('<em>' + cataclysmWeatherhtml + '</em>');
 				this.$cataclysmWeather.attr('class', cataclysmWeather ? 'weather ' + cataclysmWeather + 'weather' : 'weather');
 				this.$cataclysmWeather.animate({opacity: !cataclysmWeather ? 0.9 : 0.5}, 300);
 			});
 			this.curCataclysmWeather = cataclysmWeather;
-		} else {
+		} /* else {
 			this.$cataclysmWeather.html('<em>' + cataclysmWeatherhtml + '</em>');
-		}
+		} */
 
 		if (terrain !== this.curTerrain) {
 			this.$terrain.animate({
@@ -1321,6 +1326,13 @@ export class BattleScene implements BattleSceneStub {
 			});
 			this.curTerrain = terrain;
 		}
+
+		this.$weatherText.animate({
+			opacity: 0,
+		}, 100, () => {
+			this.$weatherText.html('<em>' + weatherTexthtml + '</em>');
+			this.$weatherText.attr('class','weather weatherText');
+		});
 	}
 	resetTurn() {
 		if (this.battle.turn <= 0) {
