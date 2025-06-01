@@ -42,6 +42,7 @@ class ModifiableValue {
 		this.clearingWeatherName = this.battle.dex.moves.get(battle.clearingWeather).exists ?
 			this.battle.dex.moves.get(battle.clearingWeather).name : this.battle.dex.abilities.get(battle.clearingWeather).name;
 		this.cataclysmWeatherName = this.battle.dex.moves.get(battle.cataclysmWeather).exists ?
+			// tslint:disable-next-line:max-line-length
 			this.battle.dex.moves.get(battle.cataclysmWeather).name : this.battle.dex.abilities.get(battle.cataclysmWeather).name;
 	}
 	reset(value = 0, isAccuracy?: boolean) {
