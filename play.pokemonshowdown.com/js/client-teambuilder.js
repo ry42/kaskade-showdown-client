@@ -2235,7 +2235,6 @@
 				case 'Sawsbuck':
 				case 'Shellos':
 				case 'Sinistea':
-				case 'Stackem':
 				case 'Tatsugiri':
 				case 'Vivillon':
 					break;
