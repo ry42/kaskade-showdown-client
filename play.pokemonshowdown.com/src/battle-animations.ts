@@ -1135,7 +1135,7 @@ export class BattleScene implements BattleSceneStub {
 		return buf;
 	}
 	pseudoWeathersLeft() {
-		let buf = ``;
+		let buf = `<br /><br /><br />`;
 		for (const pseudoWeather of this.battle.pseudoWeather) {
 			buf += this.pseudoWeatherLeft(pseudoWeather);
 		}
