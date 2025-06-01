@@ -526,6 +526,10 @@ class BattleTextParser {
 				case 'eiscuenoice': id = 'iceface'; break;
 				case 'eiscue': id = 'iceface'; templateName = 'transformEnd'; break;
 				case 'terapagosterastal': id = 'terashift'; break;
+				case 'blurruncharged': id = 'powerplumage'; break;
+				case 'blurrun': id = 'powerplumage'; templateName = 'transformEnd'; break;
+				case 'bearvoyanceawakened': id = 'consecration'; break;
+				case 'bearvoyance': id = 'consecration'; templateName = 'transformEnd'; break;
 				}
 			} else if (newSpecies) {
 				id = 'transform';
