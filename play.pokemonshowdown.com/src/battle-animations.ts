@@ -164,6 +164,7 @@ export class BattleScene implements BattleSceneStub {
 		this.$energyWeather = $('<div class="weather"></div>');
 		this.$clearingWeather = $('<div class="weather"></div>');
 		this.$cataclysmWeather = $('<div class="weather"></div>');
+		this.$weatherText = $('<div class="weather"></div>');
 		this.$bgEffect = $('<div></div>');
 		this.$sprite = $('<div></div>');
 
@@ -192,6 +193,7 @@ export class BattleScene implements BattleSceneStub {
 		this.$battle.append(this.$energyWeather);
 		this.$battle.append(this.$clearingWeather);
 		this.$battle.append(this.$cataclysmWeather);
+		this.$battle.append(this.$weatherText);
 		this.$battle.append(this.$bgEffect);
 		this.$battle.append(this.$sprite);
 		this.$battle.append(this.$stat);
