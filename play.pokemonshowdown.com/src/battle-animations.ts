@@ -1110,7 +1110,7 @@ export class BattleScene implements BattleSceneStub {
 			}
 			const nullifyWeather = this.battle.abilityActive('Nullify');
 			weatherhtml = `${nullifyWeather ? '<s>' : ''}${weatherhtml}${nullifyWeather ? '</s>' : ''}`;
-		} else {
+		} /* else {
 			if (this.climateWeatherLeft()) {
 				weatherhtml = `<br />` + weatherhtml;
 			}
@@ -1123,7 +1123,7 @@ export class BattleScene implements BattleSceneStub {
 			if (this.clearingWeatherLeft()) {
 				weatherhtml = `<br />` + weatherhtml;
 			}
-		}
+		} */
 
 		return weatherhtml;
 	}
