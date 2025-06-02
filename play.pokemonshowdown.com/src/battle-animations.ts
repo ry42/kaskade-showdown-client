@@ -1210,16 +1210,17 @@ export class BattleScene implements BattleSceneStub {
 		let energyWeatherhtml = this.energyWeatherLeft();
 		let clearingWeatherhtml = this.clearingWeatherLeft();
 		let cataclysmWeatherhtml = this.cataclysmWeatherLeft();
-		cataclysmWeatherhtml += this.pseudoWeathersLeft();
-		for (const side of this.battle.sides) {
-			cataclysmWeatherhtml += this.sideConditionsLeft(side);
-		}
+		
 		if (climateWeatherhtml) climateWeatherhtml = `<br />` + climateWeatherhtml;
 		if (irritantWeatherhtml) irritantWeatherhtml = `<br />` + irritantWeatherhtml;
 		if (energyWeatherhtml) energyWeatherhtml = `<br />` + energyWeatherhtml;
 		if (clearingWeatherhtml) clearingWeatherhtml = `<br />` + clearingWeatherhtml;
 		if (cataclysmWeatherhtml) cataclysmWeatherhtml = `<br />` + cataclysmWeatherhtml;
 
+		cataclysmWeatherhtml += this.pseudoWeathersLeft();
+		for (const side of this.battle.sides) {
+			cataclysmWeatherhtml += this.sideConditionsLeft(side);
+		}
 		let weatherTexthtml = climateWeatherhtml + irritantWeatherhtml + energyWeatherhtml + clearingWeather + cataclysmWeatherhtml;
 
 		if (instant) {
@@ -1245,6 +1246,7 @@ export class BattleScene implements BattleSceneStub {
 			this.$energyWeather.css('opacity', !energyWeather ? 0.9 : 0.5);
 			this.$clearingWeather.css('opacity', !clearingWeather ? 0.9 : 0.5);
 			this.$cataclysmWeather.css('opacity', !cataclysmWeather ? 0.9 : 0.5);
+			this.$weatherText.css('opacity', 0.9);
 			this.curClimateWeather = climateWeather;
 			this.curIrritantWeather = irritantWeather;
 			this.curEnergyWeather = energyWeather;
@@ -1330,7 +1332,7 @@ export class BattleScene implements BattleSceneStub {
 		}
 
 		this.$weatherText.animate({
-			opacity: 0,
+			opacity: 0.9,
 		}, 100, () => {
 			this.$weatherText.html('<em>' + weatherTexthtml + '</em>');
 			this.$weatherText.attr('class','weather weatherText');
