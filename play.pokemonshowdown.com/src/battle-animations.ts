@@ -1221,7 +1221,7 @@ export class BattleScene implements BattleSceneStub {
 		for (const side of this.battle.sides) {
 			cataclysmWeatherhtml += this.sideConditionsLeft(side);
 		}
-		let weatherTexthtml = climateWeatherhtml + irritantWeatherhtml + energyWeatherhtml + clearingWeather + cataclysmWeatherhtml;
+		let weatherTexthtml = climateWeatherhtml + irritantWeatherhtml + energyWeatherhtml + clearingWeatherhtml + cataclysmWeatherhtml;
 
 		if (instant) {
 			/* this.$climateWeather.html('<em>' + climateWeatherhtml + '</em>');
